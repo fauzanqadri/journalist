@@ -92,6 +92,12 @@ module Journalist
       journal_accounts.resolution_accounts
     end
 
+    def status
+      journal_accounts_size = send(Journalist.journal_account_klass.underscore.pluralize.to_sym).size
+      online_accounts_size = online_accounts.size
+      "#{online_accounts_size}/#{journal_accounts_size} Online"
+    end
+
     def get_cookie
       online = online_accounts
       if !online.blank?
