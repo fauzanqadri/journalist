@@ -36,7 +36,7 @@ module Journalist
       after_commit :recount_journal_status, on: :update, if: Proc.new {|record|
         record.previous_changes.include? :status
       }
-      after_commit :recount_journal_status, on: :create
+      after_commit :alias_recount_journal_status, on: :create
       before_destroy :make_disable
 
       scope :online_accounts, -> {where(enable: true, status: "online")}
@@ -57,7 +57,11 @@ module Journalist
       journal_model.increment_counter(:online_accounts_count, journal_id) if status == "online"
       journal_model.decrement_counter(:online_accounts_count, journal_id) if status == "offline" && model.online_accounts_count != 0
       journal_model.increment_counter(:offline_accounts_count, journal_id) if status == "offline"
-      journal_model.decrement_counter(:offline_accounts_count, journal_id) if status == "offline" && model.offline_accounts_count != 0
+      journal_model.decrement_counter(:offline_accounts_count, journal_id) if status == "online" && model.offline_accounts_count != 0
+    end
+
+    def alias_recount_journal_status
+      recount_journal_status
     end
 
     def make_disable
