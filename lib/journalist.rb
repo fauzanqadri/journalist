@@ -76,7 +76,7 @@ module Journalist
     DRIVER = Dir.glob("#{Journalist.root}/lib/journalist/driver/*.rb").map {|path| File.basename(path, ".*").classify}
 
     included do
-      validates_presence_of :name, :driver
+      validates_presence_of :name, :driver, :url, :host
       validates_inclusion_of :driver, in: DRIVER
       has_many Journalist.journal_account_klass.underscore.pluralize.to_sym, dependent: :destroy
     end

@@ -32,7 +32,7 @@ module Journalist
           journal = driver.new(journal_account)
           journal.disconnect!
           journal_account.update(status: "offline") unless journal.session_valid?
-        rescue Journalist::Execptions::AlreadyLogout
+        rescue Journalist::Exceptions::AlreadyLogout
           ::Sidekiq.logger.warn "It's already logout but, it should not show too. Contact developer"
         end
       end
