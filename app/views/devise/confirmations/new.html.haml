@@ -1,0 +1,17 @@
+#devise
+  %header
+    %h3.text-center Resend confirmation instructions
+  %hr
+  %section
+    = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { role: "form", class: "form-horizontal", method: :post }) do |f|
+      = render 'layouts/shared/errors', object: f.object
+      .form-group
+        = f.label :email, "Email", class: "sr-only"
+        .col-md-12
+          = f.email_field :email, autofocus: true, autocomplete: "off", placeholder: "Email", class: "form-control"
+      .form-group
+        .col-md-12
+          %button.btn.btn-primary{type: "submit"}
+            %i.fa.fa-upload
+            Resend confirmation instructions
+  = render "devise/shared/links"

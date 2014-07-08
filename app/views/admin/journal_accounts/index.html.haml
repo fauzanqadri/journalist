@@ -1,0 +1,30 @@
+- provide(:title, "Manage Journal Account")
+#journal-accounts
+  %header
+    .col-md-12
+      .row
+        .col-md-6
+          %h2 Manage journal account
+        .col-md-6
+          .action{style: "margin-top: 20px;"}
+            .pull-right
+              = link_to new_admin_journal_journal_account_path(@journal), class: "btn btn-primary btn-lg", remote: true do
+                %i.fa.fa-key
+                Add Journal Account
+    .clearfix
+  %hr
+  %section
+    %table#journal-account-tables.table.table-bordered{"data-url" => admin_journal_journal_accounts_path(format: "json")}
+      %thead
+        %tr
+          %th
+            .text-center Username
+          %th
+            .text-center Password
+          %th
+            .text-center Other
+          %th
+            .text-center Enabled
+          %th
+            .text-center Action
+      %tbody

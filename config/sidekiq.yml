@@ -1,0 +1,7 @@
+---
+:concurrency: 50
+:pidfile: tmp/pids/sidekiq.pid
+:queues:
+  - [high, 40]
+  - [medium, 5]
+  - [normal, 3]

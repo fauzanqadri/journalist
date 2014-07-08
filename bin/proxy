@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+require 'webrick'
+require 'webrick/httpproxy'
+require 'webrick/httpauth/basicauth'
+require "webrick/httpauth/userdb"
+require File.expand_path('../../config/environment', __FILE__)
+
+handler = proc do |req, res|
+  res.header.reject! {|key, value| key == "via" }
+  req.header.reject! {|key, value| key == "proxy-authorization"}
+  puts "#{'-'*40}\n#{req.unparsed_uri}\n#{'-'*40}\n"
+end
+
+auth = proc do |req, res|
+  WEBrick::HTTPAuth.proxy_basic_auth(req, res, 'proxy') do |user, pass|
+    user == "hello" && pass == "world"
+  end
+end
+
+server = WEBrick::HTTPProxyServer.new Port: 3001, ProxyContentHandler: handler
+
+trap 'INT'  do server.shutdown end
+trap 'TERM' do server.shutdown end
+
+server.start

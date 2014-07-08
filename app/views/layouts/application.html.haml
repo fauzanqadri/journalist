@@ -1,0 +1,13 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %title= full_title(yield(:title))
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  %body{style: "padding-top: 50px;"}
+    = render "layouts/shared/menu"
+    #flash
+      = render partial: "layouts/shared/flash", locals: {flash: flash}
+    #wraper.container
+      = yield

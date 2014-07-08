@@ -1,0 +1,29 @@
+#journal-account-modal.modal.fade{tabindex: "-1", role: "dialog", "aria-labelledby" => "journalAccountModalLabel", "aria-hidden" => "true", "data-backdrop" => "static", "data-keyboard" => "true"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{type: "button", "data-dismiss" => "modal", "aria-hidden" => "true"} &times;
+        %h4#journalAccountModalLabel.modal-title
+          = @journal_account.new_record? ? "Add new journal account" : "Edit journal account"
+      = form_for [:admin, @journal, @journal_account], remote: true, html: {role: "form", class: "form-horizontal"} do |f|
+        .modal-body
+          = render "layouts/shared/errors", object: f.object
+          .form-group
+            = f.label :username, "Username", class: "col-sm-3 control-label"
+            .col-sm-9
+              = f.text_field :username, class: "form-control", placeholder: "Journal resource username"
+          .form-group
+            = f.label :password, "Password", class: "col-sm-3 control-label"
+            .col-sm-9
+              = f.text_field :password, class: "form-control", placeholder: "Journal resource password"
+          .form-group
+            = f.label :other, "Other", class: "col-sm-3 control-label"
+            .col-sm-9
+              = f.text_field :other, class: "form-control", placeholder: "Journal resource other security key"
+          .modal-footer
+            %button.btn.btn-primary{type: "submit"}
+              %i.fa.fa-upload
+              Save
+            %button.btn.btn-default{type: "button", "data-dismiss" => "modal"}
+              %i.fa.fa-times
+              Cancel

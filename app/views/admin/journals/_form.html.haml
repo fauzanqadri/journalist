@@ -1,0 +1,25 @@
+#journal-modal.modal.fade{tabindex: "-1", role: "dialog", "aria-labelledby" => "journalModalLabel", "aria-hidden" => "true", "data-backdrop" => "static", "data-keyboard" => "true"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{type: "button", "data-dismiss" => "modal", "aria-hidden" => "true"} &times;
+        %h4#journalModalLabel.modal-title
+          = @journal.new_record? ? "Create new journal resource" : "Edit journal resources"
+      = form_for [:admin, @journal], remote: true, html: {role: "form", class: "form-horizontal"} do |f|
+        .modal-body
+          = render "layouts/shared/errors", object: f.object
+          .form-group
+            = f.label :name, "Name", class: "col-sm-3 control-label"
+            .col-sm-9
+              = f.text_field :name, class: "form-control", placeholder: "Journal resources name"
+          .form-group
+            = f.label :driver, "Driver", class: "col-sm-3 control-label"
+            .col-sm-9
+              = f.select :driver, options_for_select(Journal::DRIVER, selected: @journal.driver), {}, {class: "form-control"}
+          .modal-footer
+            %button.btn.btn-primary{type: "submit"}
+              %i.fa.fa-upload
+              Save
+            %button.btn.btn-default{type: "button", "data-dismiss" => "modal"}
+              %i.fa.fa-times
+              Cancel

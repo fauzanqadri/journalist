@@ -1,0 +1,7 @@
+- flash.each do |key, value|
+  %div{class: flash_class(key), style: "display: none;"}
+    %button.close &times;
+    %span{class: flash_icon(key)}
+    %strong= "#{message_status(key)} Message"
+    %hr.message-inner-separator
+    %p= raw(value)

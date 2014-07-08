@@ -1,0 +1,25 @@
+#devise
+  %header
+    %h3.text-center Journalist please sign in
+  %hr
+  %section
+    = form_for(resource, as: resource_name, url: session_path(resource_name), html: {role: "form", class: "form-horizontal"}) do |f|
+      .form-group
+        = f.label :email, "Email", class: "sr-only"
+        .col-md-12
+          = f.email_field :email, autofocus: true, class: "form-control", placeholder: "Email"
+      .form-group
+        = f.label :password, "Password", class: "sr-only"
+        .col-md-12
+          = f.password_field :password, autocomplete: "off", placeholder: "Password", class: "form-control"
+      .form-group
+        .col-md-6
+          %button.btn.btn-primary{type: "submit"}
+            %i.fa.fa-sign-in
+            Sign in
+        .col-md-6
+          - if devise_mapping.rememberable?
+            %label.checkbox-inline.pull-right
+              = f.check_box :remember_me
+              Remember me
+  = render "devise/shared/links"

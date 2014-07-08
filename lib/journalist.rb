@@ -8,7 +8,7 @@ require 'journalist/agent'
 require 'journalist/driver'
 Dir["#{Journalist.root}/lib/journalist/driver/*.rb"].each {|f| require f}
 require 'journalist/backgrounder'
-
+require 'journalist/proxy'
 module Journalist
   module JournalAccountModel
     extend ActiveSupport::Concern
@@ -44,6 +44,14 @@ module Journalist
       scope :resolution_accounts, ->{where(enable: true, status: "resolution")}
     end
 
+    def toggle_enable
+      if enable
+        update(enable: false)
+      else
+       update(enable: true)
+      end
+    end
+
     private
     def make_online_offline
       open_session if enable
@@ -76,7 +84,7 @@ module Journalist
     DRIVER = Dir.glob("#{Journalist.root}/lib/journalist/driver/*.rb").map {|path| File.basename(path, ".*").classify}
 
     included do
-      validates_presence_of :name, :driver, :url, :host
+      validates_presence_of :name, :driver
       validates_inclusion_of :driver, in: DRIVER
       has_many Journalist.journal_account_klass.underscore.pluralize.to_sym, dependent: :destroy
     end
@@ -102,18 +110,18 @@ module Journalist
       "#{online_accounts_size}/#{journal_accounts_size} Online"
     end
 
-    def get_cookie
-      online = online_accounts
-      if !online.blank?
-        index = rand(online_accounts.size)
-        journal_account_cache = online[index]
-        journal_account_model = send(Journalist.journal_account_klass.underscore.pluralize.to_sym)
-        journal_account = journal_account_model.find(journal_account_cache.id)
-        driver = journal_account.send(Journalist.journal_account_klass_belongs_to).driver.constantize.new(journal_account)
-        driver.get_cookie
-      else
-        nil
-      end
-    end
+    # def get_cookie
+    #   online = online_accounts
+    #   if !online.blank?
+    #     index = rand(online_accounts.size)
+    #     journal_account_cache = online[index]
+    #     journal_account_model = send(Journalist.journal_account_klass.underscore.pluralize.to_sym)
+    #     journal_account = journal_account_model.find(journal_account_cache.id)
+    #     driver = journal_account.send(Journalist.journal_account_klass_belongs_to).driver.constantize.new(journal_account)
+    #     driver.get_cookie
+    #   else
+    #     nil
+    #   end
+    # end
   end
 end

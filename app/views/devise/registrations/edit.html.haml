@@ -1,0 +1,28 @@
+#edit-user
+  %header
+    %h2.text-center Change password
+  %hr
+  %section
+    = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put , class: "form-horizontal", role: "form"}) do |f|
+      = render 'layouts/shared/errors', object: f.object
+      .form-group
+        = f.label :password, "Password", class: "col-md-4 control-label"
+        .col-md-8
+          = f.password_field :password, placeholder: "Password", autofocus: true, autocomplete: "off", class: "form-control"
+      .form-group
+        = f.label :password_confirmation, "Passowrd confirmation", class: "col-md-4 control-label"
+        .col-md-8
+          = f.password_field :password_confirmation, placeholder: "Password confirmation", autofocus: true, autocomplete: "off", class: "form-control"
+      %hr
+      %legend Current Password
+      .form-group
+        = f.label :current_password, "Current Password", class: "control-label col-sm-4"
+        .col-sm-8
+          = f.password_field :current_password, class: "form-control", autocomplte: "off", placeholder: "Current password"
+          %p.help-block We need your current password for security
+      %hr
+      .form-group
+        .col-md-offset-4.col-md-8
+          %button.btn.btn-primary{type: "submit"}
+            %i.fa.fa-upload
+            Change password

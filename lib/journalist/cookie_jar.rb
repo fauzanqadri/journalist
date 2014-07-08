@@ -16,5 +16,20 @@ module Journalist
       end
       cookies
     end
+
+    def to_browser
+      cookies = []
+      JSON.parse(self.to_json, symbolize_names: true).each do |hash|
+        cookies << {
+          domain: hash[:domain],
+          name: hash[:name],
+          path: hash[:path],
+          url: "#{(hash[:secure] ? 'https' : 'http')}://#{hash[:domain]}#{hash[:path]}",
+          value: hash[:value],
+          secure: hash[:secure]
+        }
+      end
+      cookies
+    end
   end
 end
